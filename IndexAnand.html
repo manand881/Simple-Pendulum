@@ -22,7 +22,7 @@
 
 var b = 0.1
 var m = 1
-var amplitude0 = Math.PI / 4;               // 45 degrees
+var amplitude0 = Math.PI / 3;               // 60 degrees
 var startTime = Date.now();
 var elapsed = Date.now()-startTime;
 
@@ -32,7 +32,7 @@ var elapsed = Date.now()-startTime;
 function begin(){
 
   change_control_image();
-  amplitude0 = Math.PI / 4;                 // 45 degrees
+  amplitude0 = Math.PI / 3;                 // 60 degrees
   startTime = Date.now();
   instanciate();
 }
@@ -47,6 +47,7 @@ window.onload = function(){
 
   amplitude0=0;
   instanciate();
+  alert(Math.PI/3*(180/Math.PI));
 }
 
 function clearinput(){
@@ -79,25 +80,43 @@ function end(){
 
 function getInputValue_m(){
   // Selecting the input element and get its value 
-  var inputVal = document.getElementById("mass").value;          
+  var inputVal = document.getElementById("mass").value;
+  if(inputVal>0){       
   m = inputVal;
+  }else{
+  alert("Enter Value greater than 0");
+  }
+  document.getElementById("mass").placeholder = m;
+  clearinput();   
   // startTime = Date.now();
 }
 
 function getInputValue_b(){
   // Selecting the input element and get its value 
   var inputVal = document.getElementById("b").value;          
+  if(inputVal>=0){       
   b = inputVal;
+  }else{
+  alert("Enter Value greater than 0");
+  }
+  clearinput();
+  document.getElementById("b").placeholder = b;
   // startTime = Date.now();
 
 }
 
 function getInputValue_amplitude(){
   // Selecting the input element and get its value 
-  var inputVal = document.getElementById("amplitude").value;          
+  var inputVal = document.getElementById("amplitude").value;
+  if(inputVal>0){       
   amplitude0 = inputVal*Math.PI/180;
+  }else{
+  alert("Enter Value greater than 0");
+  }  
   startTime = Date.now();
-  alert(amplitude0,this.getTime());
+  document.getElementById("amplitude").placeholder = inputVal;
+  clearinput();
+
 }
 
 
@@ -223,7 +242,7 @@ function instanciate(){
     // amplitude = amplitude0*Math.exp((-b/2*m)*(this.getTime()) / period)
     
     // theta = (amplitude0*Math.exp((-b/2*m)*(this.getTime()) / period) * Math.sin((2 * Math.PI * this.getTime()) / period)) + Math.PI / 2;
-    theta = (amplitude0*Math.exp((-b/2*m)*(elapsed) / period) * Math.sin((2 * Math.PI * elapsed) / period)) + Math.PI / 2;
+    theta = (amplitude0*Math.exp((-b/2*m)*(elapsed) / period) * Math.cos((2 * Math.PI * elapsed) / period)) + Math.PI / 2;
 
     console.log(elapsed,this.getTime());
 
