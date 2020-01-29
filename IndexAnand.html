@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+<meta charset="UTF-8">
+
+<title>SOLVE - Mechanics of Machines Lab - Simple Pendulum</title>
+
+<!-- DND-Required css and js files -->
+<link rel="stylesheet" href="sins/MOMstyle.css" />
+
+<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js'></script>
+<script src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.0/jquery-ui.min.js'></script>
+<!-- <style type="text/css">
+  #myCanvas{
+    padding-top: 85px;
+  }
+  </style>  -->
+
+<!-- <script type="text/javascript" src= "sins/MOMscript.js"></script> -->
+<script >
+
+var b = 0.1
+var m = 1
+var amplitude0 = Math.PI / 4;               // 45 degrees
+var startTime = Date.now();
+var elapsed = Date.now()-startTime;
+
+
+
+
+function begin(){
+
+  change_control_image();
+  amplitude0 = Math.PI / 4;                 // 45 degrees
+  startTime = Date.now();
+  instanciate();
+}
+
+function change_control_image(){
+
+  document.getElementById("playpausebutton").src = "sins/bluestopdull.png";
+}
+
+
+window.onload = function(){
+
+  amplitude0=0;
+  instanciate();
+}
+
+function clearinput(){
+
+//clear mass field
+
+var input = document.getElementById("mass");
+input_value =  input.getAttribute("value");
+input_value = "";
+input.value=input_value;
+
+// clear b field
+
+input = document.getElementById("b");
+input_value =  input.getAttribute("value");
+input_value = "";
+input.value=input_value;
+
+// clear amplitude field
+
+input = document.getElementById("amplitude");
+input_value =  input.getAttribute("value");
+input_value = "";
+input.value=input_value;
+}
+
+function end(){
+  amplitude0=0;
+}
+
+function getInputValue_m(){
+  // Selecting the input element and get its value 
+  var inputVal = document.getElementById("mass").value;          
+  m = inputVal;
+  // startTime = Date.now();
+}
+
+function getInputValue_b(){
+  // Selecting the input element and get its value 
+  var inputVal = document.getElementById("b").value;          
+  b = inputVal;
+  // startTime = Date.now();
+
+}
+
+function getInputValue_amplitude(){
+  // Selecting the input element and get its value 
+  var inputVal = document.getElementById("amplitude").value;          
+  amplitude0 = inputVal*Math.PI/180;
+  startTime = Date.now();
+  alert(amplitude0,this.getTime());
+}
+
+
+  var Animation = function(canvasId) {
+  this.canvas = document.getElementById(canvasId);
+  this.context = this.canvas.getContext("2d");
+  this.t = 0;
+  this.timeInterval = 0;
+  this.startTime = 0;
+  this.lastTime = 0;
+  this.frame = 0;
+  this.animating = false;
+  
+  // by Paul Irish
+  window.requestAnimFrame = (function(callback){
+    return window.requestAnimationFrame || 
+      window.webkitRequestAnimationFrame ||
+      function(callback){
+      window.setTimeout(callback, 1000 / 60);
+    };
+  })();
+};
+
+Animation.prototype.getContext = function getContext(){
+  return this.context;
+};
+
+Animation.prototype.getCanvas = function(){
+  return this.canvas;
+};
+
+Animation.prototype.clear = function(){
+  this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+};
+
+Animation.prototype.setStage = function(func){
+  this.stage = func;
+};
+
+Animation.prototype.isAnimating = function(){
+  return this.animating;
+};
+
+Animation.prototype.getFrame = function(){
+  return this.frame;
+};
+
+Animation.prototype.start = function(){
+  this.animating = true;
+  var date = new Date();
+  this.startTime = date.getTime();
+  this.lastTime = this.startTime;
+  
+  if (this.stage !== undefined){
+    this.stage();
+  }
+  
+  this.animationLoop();
+};
+
+Animation.prototype.stop = function(){
+  this.animating = false;
+};
+
+Animation.prototype.getTimeInterval = function(){
+  return this.timeInterval;
+};
+
+Animation.prototype.getTime = function(){
+  return this.t;
+};
+
+Animation.prototype.getFps = function(){
+  return this.timeInterval > 0 ? 1000 / this.timeInterval : 0;
+};
+
+Animation.prototype.animationLoop = function(){
+  var that = this;
+  
+  this.frame++;
+  var date = new Date();
+  var thisTime = date.getTime();
+  this.timeInterval = thisTime - this.lastTime;
+  this.t += this.timeInterval;
+  this.lastTime = thisTime;
+  
+  if (this.stage !== undefined){
+    this.stage();
+  }
+  
+  if (this.animating){
+    window.requestAnimFrame(function(){
+      that.animationLoop();
+    });
+  }
+  
+};
+
+function instanciate(){
+  // instantiate new Animation object
+  var anim = new Animation("myCanvas");
+  var context = anim.getContext();
+  var canvas = anim.getCanvas();
+  
+  // var amplitude0 = Math.PI / 4; // 45 degrees
+  var amplitude = amplitude0
+  var period = 4000; //ms
+  var theta = 0;
+  var pendulumLength = 250;
+  var pendulumWidth = 10;
+  var rotationPointX = canvas.width / 2;
+  var rotationPointY = 20;
+  var iterate = 0
+  startTime = Date.now();
+
+  
+  anim.setStage(function(){
+    elapsed = Date.now()-startTime;
+
+    //    update
+    //    theta = (amplitude * Math.sin((2 * Math.PI * this.getTime()) / period)) + Math.PI / 2;
+    //    amplitude = amplitude0*Math.exp((-b/2*m)*(this.getTime()) / period)
+    // amplitude = amplitude0*Math.exp((-b/2*m)*(this.getTime()) / period)
+    
+    // theta = (amplitude0*Math.exp((-b/2*m)*(this.getTime()) / period) * Math.sin((2 * Math.PI * this.getTime()) / period)) + Math.PI / 2;
+    theta = (amplitude0*Math.exp((-b/2*m)*(elapsed) / period) * Math.sin((2 * Math.PI * elapsed) / period)) + Math.PI / 2;
+
+    console.log(elapsed,this.getTime());
+
+    //clear
+    this.clear();
+
+    //draw dotted line
+    var canvas_dotted = document.getElementById("myCanvas");
+    var ctx = canvas_dotted.getContext("2d");
+    // ctx.setLineDash([16, 16]);/*dashes are 5px and spaces are 3px*/
+    ctx.beginPath();
+    ctx.lineWidth=1;
+    ctx.moveTo(275,5);
+    ctx.lineTo(275, 320);
+    ctx.strokeStyle="#B76E79";
+    ctx.stroke();
+    
+    //draw top circle
+    context.beginPath();
+    context.arc(rotationPointX, rotationPointY, 15, 0, 2 * Math.PI, false);
+    context.fillStyle = "black";
+    context.fill();
+    
+    //draw shaft
+    context.beginPath();
+    var endPointX = rotationPointX + (pendulumLength * Math.cos(theta));
+    var endPointY = rotationPointY + (pendulumLength * Math.sin(theta));
+    context.beginPath();
+    context.moveTo(rotationPointX, rotationPointY);
+    context.lineTo(endPointX, endPointY);
+    context.lineWidth = pendulumWidth;
+    context.lineCap = "round";
+    context.strokeStyle = "#868686";
+    context.stroke();
+    
+    //draw bottom circle
+    context.beginPath();
+    context.arc(endPointX, endPointY, 40, 0, 2 * Math.PI, false);
+    var grd = context.createLinearGradient(endPointX - 50, endPointY - 50, endPointX + 50, endPointY + 50);
+    grd.addColorStop(0, "#d4af37");
+    grd.addColorStop(0.5, "white");
+    grd.addColorStop(1, "#d4af37"); 
+    context.fillStyle = grd;
+    context.fill();
+  });
+  anim.start();
+};
+</script>
+
+</head>
+
+<body>
+
+<!-- DND-Verifying JavaScript is enabled in browser -->
+<noscript>
+The simulation requires JavaScript to be enabled.
+</noscript>
+
+<!-- 
+Author : Sai Aditya Raman 
+send an email to adityaraman09@gmail.com for any communication
+-->
+
+<!-- Defining Container for Simulation -->
+<div id="container">
+
+<!-- Replace TITLE with simulation title to be displayed next to logo-->
+<div id="simtitle">Sample Pendulum</div>
+
+<!-- Region for simulation display -->
+<canvas id="myCanvas" height="400px" width="550px"></canvas>
+
+<div id="titleincanvas"></div>
+
+
+
+<!-- Region for comment / question prompts -->
+<div id="commentboxleft">left</div>
+<div id="commentboxright">right</div>
+
+<!-- DND-Title of region for variables display --> 
+<div id="vartitle">VARIABLES</div>
+
+<!-- Region for Input parameters of simulation -->
+<div id="variables">
+
+<!-- System variable input from user through slider and spinner jQuery widgets 
+repeat block with new variable name and new id for widgets-->
+
+<div class="variable">
+
+
+<!-- <button type="button" onclick="begin();">Start</button> -->
+<button type="button" onclick="end();">Stop</button>
+<!-- <button type="button" onclick="clearinput();">cl</button><br> -->
+
+
+<div class="varname">
+  <p title="Link Length">Mass (m)</p>
+  <input type="number" placeholder="1" id="mass" value="" autocomplete="off">
+</div>
+<button type="button" onclick="getInputValue_m();">Update</button><br>
+
+
+<div class="varname">
+  <p title="Link Length">Damping (b)</p>
+  <input type="number" placeholder="0.1" id="b" value="" autocomplete="off">
+</div>
+<button type="button" onclick="getInputValue_b();">Update</button><br>
+
+
+<div class="varname">
+  <p title="Link Length">Amplitude(degree)</p>
+  <input type="number" placeholder="45" id="amplitude" value="" autocomplete="off"><br>
+</div>
+<button type="button" onclick="getInputValue_amplitude();">Set</button>
+
+</div>
+</div>
+
+<!-- DND-Title of region for controls display -->
+<div id="ctrltitle">CONTROLS</div>
+
+<!-- Region for User controls of simulation -->
+<div id="controls">
+<img id="playpausebutton" onclick="begin()" src="sins/blueplaydull.png" />
+<img id="rotationbutton" onclick="clearinput()" src="sins/clear.png" />
+
+<!--
+<div class="usercheck">-->
+<!-- Point tracing
+<input type="checkbox" id="trace" ></input> <p>Trace Mid Point</p>-->
+<!-- Reset Parameters
+<input type="button" id="resetparams" value="Reset" onclick="varinit();"></input> -->
+</div>
+
+
+<!-- DND-Copyright display-->
+<div id="copyright" title="Developer : SOLVEr"> Copyright &copy; SOLVE The Virtual Lab @ NITK Surathkal </div>
+
+</div><!-- Container div close -->
+
+<!-- For trials during development
+write in trythis() function the outputs that you want to check.
+<input type='button' onclick='trythis()' value="try me"></input> 
+-->
+
+</body>
+</html>
