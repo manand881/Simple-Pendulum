@@ -25,21 +25,33 @@ var m = 1
 var amplitude0 = Math.PI / 3;               // 60 degrees
 var startTime = Date.now();
 var elapsed = Date.now()-startTime;
+var start_stop_trigger=true;
 
 
 
 
 function begin(){
 
-  change_control_image();
-  amplitude0 = Math.PI / 3;                 // 60 degrees
-  startTime = Date.now();
-  instanciate();
+  if(start_stop_trigger==true){
+    
+    amplitude0 = Math.PI / 3;               // 60 degrees
+    startTime = Date.now();
+    instanciate();
+    start_stop_trigger=false;
+    change_control_image();
+
+  }
 }
 
 function change_control_image(){
+  if (start_stop_trigger==false){
 
-  document.getElementById("playpausebutton").src = "sins/bluestopdull.png";
+    document.getElementById("playpausebutton").src = "sins/blueplaydullgrey.png";
+  }
+  else{
+    document.getElementById("playpausebutton").src = "sins/blueplaydull.png";
+
+  }
 }
 
 
@@ -47,7 +59,6 @@ window.onload = function(){
 
   amplitude0=0;
   instanciate();
-  alert(Math.PI/3*(180/Math.PI));
 }
 
 function clearinput(){
@@ -76,6 +87,8 @@ input.value=input_value;
 
 function end(){
   amplitude0=0;
+  start_stop_trigger=true;
+  change_control_image();
 }
 
 function getInputValue_m(){
@@ -108,13 +121,18 @@ function getInputValue_b(){
 function getInputValue_amplitude(){
   // Selecting the input element and get its value 
   var inputVal = document.getElementById("amplitude").value;
-  if(inputVal>0){       
-  amplitude0 = inputVal*Math.PI/180;
+  if(inputVal>0){   
+    if(inputVal>90){
+      alert("Enter Value lesser than 90");
+    }
+    else{    
+      amplitude0 = inputVal*Math.PI/180;
+      document.getElementById("amplitude").placeholder = inputVal;
+      }
   }else{
   alert("Enter Value greater than 0");
   }  
   startTime = Date.now();
-  document.getElementById("amplitude").placeholder = inputVal;
   clearinput();
 
 }
@@ -244,8 +262,6 @@ function instanciate(){
     // theta = (amplitude0*Math.exp((-b/2*m)*(this.getTime()) / period) * Math.sin((2 * Math.PI * this.getTime()) / period)) + Math.PI / 2;
     theta = (amplitude0*Math.exp((-b/2*m)*(elapsed) / period) * Math.cos((2 * Math.PI * elapsed) / period)) + Math.PI / 2;
 
-    console.log(elapsed,this.getTime());
-
     //clear
     this.clear();
 
@@ -333,7 +349,7 @@ repeat block with new variable name and new id for widgets-->
 
 
 <!-- <button type="button" onclick="begin();">Start</button> -->
-<button type="button" onclick="end();">Stop</button>
+<!-- <button type="button" onclick="end();">Stop</button> -->
 <!-- <button type="button" onclick="clearinput();">cl</button><br> -->
 
 
@@ -353,7 +369,7 @@ repeat block with new variable name and new id for widgets-->
 
 <div class="varname">
   <p title="Link Length">Amplitude(degree)</p>
-  <input type="number" placeholder="45" id="amplitude" value="" autocomplete="off"><br>
+  <input type="number" placeholder="60" id="amplitude" value="" autocomplete="off"><br>
 </div>
 <button type="button" onclick="getInputValue_amplitude();">Set</button>
 
@@ -366,6 +382,7 @@ repeat block with new variable name and new id for widgets-->
 <!-- Region for User controls of simulation -->
 <div id="controls">
 <img id="playpausebutton" onclick="begin()" src="sins/blueplaydull.png" />
+<img id="rotationbutton" onclick="end()" src="sins/bluestopdull.png" /><br>
 <img id="rotationbutton" onclick="clearinput()" src="sins/clear.png" />
 
 <!--
