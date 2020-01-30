@@ -280,11 +280,11 @@
                 context.stroke();
 
                 //display time
-                context.beginPath();
-                context.font="14px 'Comic Sans MS'";
-                context.fillStyle = "#000000";
-                context.fillText("Time in Seconds: "+(elapsed/1000), 100, 200, 170);
-                context.stroke();
+                var commenttext_time="Time in Seconds: "+(elapsed/1000);
+                if(start_stop_trigger===true){
+                    document.getElementById('commentboxleft').innerHTML = "";
+                }else{
+                document.getElementById('commentboxleft').innerHTML = commenttext_time;}
 
                 // draw top circle
                 context.beginPath();

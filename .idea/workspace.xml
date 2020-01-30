@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="feab62c5-9c2a-4844-a93a-c93d27f4e590" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/IndexAnand.html" beforeDir="false" afterPath="$PROJECT_DIR$/IndexAnand.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sins/MOMstyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/sins/MOMstyle.css" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -20,8 +18,17 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/IndexAnand.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="252">
-              <caret line="284" column="33" selection-start-line="284" selection-start-column="33" selection-end-line="284" selection-end-column="33" />
+            <state relative-caret-position="353">
+              <caret line="286" column="88" selection-start-line="286" selection-start-column="88" selection-end-line="286" selection-end-column="88" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../../sampleCode/index.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="307">
+              <caret line="274" column="45" lean-forward="true" selection-start-line="274" selection-end-line="275" />
             </state>
           </provider>
         </entry>
@@ -60,6 +67,7 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/sins/MOMstyle.css" />
+        <option value="$PROJECT_DIR$/../../sampleCode/index.html" />
         <option value="$PROJECT_DIR$/IndexAnand.html" />
       </list>
     </option>
@@ -133,12 +141,12 @@
       <option name="presentableId" value="Default" />
       <updated>1580314872059</updated>
       <workItem from="1580314874246" duration="1302000" />
-      <workItem from="1580356075562" duration="11166000" />
+      <workItem from="1580356075562" duration="12431000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="12468000" />
+    <option name="totallyTimeSpent" value="13733000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -182,10 +190,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/../../sampleCode/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="307">
+          <caret line="274" column="45" lean-forward="true" selection-start-line="274" selection-end-line="275" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/IndexAnand.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="284" column="33" selection-start-line="284" selection-start-column="33" selection-end-line="284" selection-end-column="33" />
+        <state relative-caret-position="353">
+          <caret line="286" column="88" selection-start-line="286" selection-start-column="88" selection-end-line="286" selection-end-column="88" />
         </state>
       </provider>
     </entry>
