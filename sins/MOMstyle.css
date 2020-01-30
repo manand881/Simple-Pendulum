@@ -152,22 +152,54 @@ div#variables
 div#controls
 {
 	position:absolute;
-	left:607px;
+	left:615px;
 	top:435px;
 	height: 140px;
-	width: 175px;
+	width: 177px;
+}
+
+div#controls_row
+{
+	position:absolute;
+	left:645px;
+	top:445px;
+	height: 140px;
+	width: 177px;
+	display: flex;
+	flex-wrap: wrap;
+	padding: 0 4px;
+}
+
+.control_column {
+	flex: 50%;
+	padding: 0 4px;
+}
+
+.control_column img {
+	margin-top: 8px;
+	vertical-align: middle;
 }
 
 input#mass{
 	-moz-appearance:textfield;
+
 }
 
 input#b{
 	-moz-appearance:textfield;
+
 }
 
 input#amplitude{
 	-moz-appearance:textfield;
+
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+	-moz-appearance:textfield;
+	-webkit-appearance: none;
+	margin: 0;
 }
 
 #playpausebutton
