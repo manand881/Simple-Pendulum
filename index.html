@@ -26,16 +26,20 @@
         var startTime = Date.now();
         var elapsed = Date.now()-startTime;
         var start_stop_trigger=true;
-
+        var record=true;
+        var amplitude_graph = new Array();
+        var time_graph = new Array();
 
         function begin(){
 
             if(start_stop_trigger===true){
 
+                sessionStorage.clear();
+                record=true;
                 amplitude0 = Math.PI / 3;               // 60 degrees
                 startTime = Date.now();
-                instanciate();
                 start_stop_trigger=false;
+                instanciate();
                 change_control_image();
             }
         }
@@ -142,8 +146,11 @@
         }
 
         function newpage(){
-            alert("Opening Graph on new page");
-            window.open("Graph.html", "_blank");
+            sessionStorage.clear();
+            window.sessionStorage.setItem("amplitude_graph", JSON.stringify(amplitude_graph));
+            window.sessionStorage.setItem("time_graph", JSON.stringify(time_graph));
+            window.open("Graph.html");
+            record=false;
         }
 
 
@@ -270,6 +277,14 @@
 
                 //    theta = (amplitude0*Math.exp((-b/2*m)*(this.getTime()) / period) * Math.sin((2 * Math.PI * this.getTime()) / period)) + Math.PI / 2;
                 theta = (amplitude0*Math.exp((-b/2*m)*(elapsed) / period) * Math.cos((2 * Math.PI * elapsed) / period)) + Math.PI / 2;
+                if(start_stop_trigger===false && record===true){
+                    amplitude_graph.push(theta*180/Math.PI);
+                    time_graph.push(elapsed/1000);
+                }
+
+
+                //creating array for graphing
+
 
                 //clear
                 this.clear();
