@@ -91,8 +91,8 @@ canvas#myCanvas
 	position:absolute;
 	left:30px;
 	top:100px;
-	height: 400px;
-	width: 550px;
+	height: 470px;
+	width: 565px;
 }
 
 canvas#simscreen
@@ -101,7 +101,7 @@ canvas#simscreen
 	left:30px;
 	top:100px;
 	height: 400px;
-	width: 550px;
+	width: 560px;
 }
 
 div#commentboxleft
@@ -182,17 +182,32 @@ div#controls_row
 
 input#mass{
 	-moz-appearance:textfield;
+	width:100px;
 
 }
 
 input#b{
 	-moz-appearance:textfield;
-
+	width:100px;
 }
 
 input#amplitude{
 	-moz-appearance:textfield;
+	width:100px;
+}
 
+input#time_period{
+	 -moz-appearance:textfield;
+	 width:100px;
+}
+
+input#length{
+	-moz-appearance:textfield;
+	width:100px;
+}
+
+Div#Time_Elapsed{
+padding-top: 5px;
 }
 
 input::-webkit-outer-spin-button,

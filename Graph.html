@@ -11,17 +11,20 @@
 
     var time_array = JSON.parse(sessionStorage.getItem("amplitude_graph"));//no brackets
     var amplitude_array = JSON.parse(sessionStorage.getItem("time_graph"));//no brackets
-
-    console.log(time_array,amplitude_array);
-
     var x = 0;
     var len = time_array.length;
+
+    if (len===0){
+        alert("No data to plot the graph");
+    }
+
     while(x < len){
         time_array[x] = time_array[x].toFixed(4);
         amplitude_array[x] = amplitude_array[x].toFixed(4);
-
-        x++
+        x++;
     }
+
+    console.log(time_array,amplitude_array);
 
     var trace2 = {
         y: time_array,
@@ -34,14 +37,13 @@
     };
 
     var data = [trace2];
-
     var layout = {
         title: 'Graph of Amplitude Vs Time',
         xaxis: {
-            title: 'x-axis: Time'
+            title: 'X-axis: Time'
         },
         yaxis: {
-            title: 'y-axis: Amplitude'
+            title: 'Y-axis: Amplitude'
         },
         legend: {
             y: 0.5,
@@ -51,7 +53,8 @@
         }};
 
     Plotly.newPlot('myDiv', data, layout);
-    sessionStorage.clear();
+    sessionStorage.removeItem("amplitude_graph");
+    sessionStorage.removeItem("time_graph");
 
 </script>
 </body>

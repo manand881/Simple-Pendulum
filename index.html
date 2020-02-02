@@ -22,13 +22,17 @@
 
         var m = 1;
         var b = 0.1;
-        var amplitude0 = Math.PI / 3;               // 60 degrees
-        var startTime = Date.now();
-        var elapsed = Date.now()-startTime;
-        var start_stop_trigger=true;
         var record=true;
-        var amplitude_graph = new Array();
-        var time_graph = new Array();
+        var period = 1000; //ms
+        var pendulumLength = 100;                               // for animation purposes
+        var startTime = Date.now();
+        var start_stop_trigger=true;
+        var amplitude0 = Math.PI / 3;                           // 60 degrees
+        var elapsed = Date.now()-startTime;
+        var amplitude_graph = new Array();                      // for graphing purposes
+        var time_graph = new Array();                           // for graphing purposes
+        var length=((period*2/1000)**2*9.80665)/(2*Math.PI)**2; // length of the pendulum
+
 
         function begin(){
 
@@ -41,6 +45,7 @@
                 start_stop_trigger=false;
                 instanciate();
                 change_control_image();
+                disable_buttons();
             }
         }
 
@@ -51,7 +56,36 @@
                 document.getElementById("playpausebutton").src = "sins/blueplaydullgrey.png";
             }
             else{
+
                 document.getElementById("playpausebutton").src = "sins/blueplaydull.png";
+            }
+        }
+
+        function disable_buttons(){
+
+            if(start_stop_trigger===false){
+                document.getElementById("mass").disabled = true;
+                document.getElementById("b").disabled = true;
+                document.getElementById("amplitude").disabled = true;
+                document.getElementById("length").disabled = true;
+                document.getElementById("time_period").disabled = true;
+                document.getElementById("mass_button").disabled = true;
+                document.getElementById("b_button").disabled = true;
+                document.getElementById("amplitude_button").disabled = true;
+                document.getElementById("length_button").disabled = true;
+                document.getElementById("time_period_button").disabled = true;
+            }
+            else{
+                document.getElementById("mass").disabled = false;
+                document.getElementById("b").disabled = false;
+                document.getElementById("amplitude").disabled = false;
+                document.getElementById("length").disabled = false;
+                document.getElementById("time_period").disabled = false;
+                document.getElementById("mass_button").disabled = false;
+                document.getElementById("b_button").disabled = false;
+                document.getElementById("amplitude_button").disabled = false;
+                document.getElementById("length_button").disabled = false;
+                document.getElementById("time_period_button").disabled = false;
             }
         }
 
@@ -69,22 +103,33 @@
             input.value=input_value;
 
             // clear b field
-
             input = document.getElementById("b");
             input_value = "";
             input.value=input_value;
 
             // clear amplitude field
-
             input = document.getElementById("amplitude");
+            input_value = "";
+            input.value=input_value;
+
+            // clear time field
+            input = document.getElementById("time_period");
+            input_value = "";
+            input.value=input_value;
+
+            //clear length field
+            input = document.getElementById("length");
             input_value = "";
             input.value=input_value;
         }
 
         function end(){
+
             amplitude0=0;
             start_stop_trigger=true;
             change_control_image();
+            sessionStorage.clear();
+            disable_buttons();
         }
 
         function getInputValue_m(){                 // Selecting the input element and get its value
@@ -119,7 +164,6 @@
             clearinput();
             document.getElementById("b").placeholder = b;
             // startTime = Date.now();
-
         }
 
         function getInputValue_amplitude(){
@@ -142,15 +186,63 @@
             }
             startTime = Date.now();
             clearinput();
+        }
 
+        function getInputValue_timeperiod(){
+
+            // Selecting the input element and get its value
+            var inputVal = document.getElementById("time_period").value;
+            if(inputVal>0){
+                period = (inputVal*1000);
+            }else if(inputVal<0){
+                alert("Enter Value greater than 0");
+            }else if(typeof inputVal == "string"){
+                alert("Enter numbers only.");
+            }else{
+                alert("Enter Value greater than 0");
+            }
+            clearinput();
+            document.getElementById("time_period").placeholder = period/1000;
+            length=((period*2/1000)**2*9.80665)/(2*Math.PI)**2;
+            length=length.toFixed(4);
+            document.getElementById("length").placeholder = length;                                                     // length/0.09936=x/100
+            pendulumLength=(length*100)/0.9936;                                                                         // length*100/0.9936=pend_len
+        }
+
+        function getInputValue_length(){
+
+            // Selecting the input element and get its value
+            var inputVal = document.getElementById("length").value;
+            if(inputVal>0){
+                length = inputVal;
+            }else if(inputVal<0){
+                alert("Enter Value greater than 0");
+            }else if(typeof inputVal == "string"){
+                alert("Enter numbers only.");
+            }else{
+                alert("Enter Value greater than 0");
+            }
+            clearinput();
+            document.getElementById("length").placeholder = length;
+            period=1000*2*Math.PI*Math.sqrt(length/9.80665);
+            period=period.toFixed(4);
+            document.getElementById("time_period").placeholder = period/2000;
+            pendulumLength=(length*100)/0.9936;                                                                         // length*100/0.9936=pend_len
+            // startTime = Date.now();
         }
 
         function newpage(){
-            sessionStorage.clear();
-            window.sessionStorage.setItem("amplitude_graph", JSON.stringify(amplitude_graph));
-            window.sessionStorage.setItem("time_graph", JSON.stringify(time_graph));
-            window.open("Graph.html");
-            record=false;
+
+            var len = time_graph.length;
+            if (len===0){
+                alert("No data to plot the graph");
+            }else{
+                sessionStorage.clear();
+                window.sessionStorage.setItem("amplitude_graph", JSON.stringify(amplitude_graph));
+                window.sessionStorage.setItem("time_graph", JSON.stringify(time_graph));
+                window.open("Graph.html");
+                record=false;
+            }
         }
 
 
@@ -228,8 +320,8 @@
         };
 
         Animation.prototype.animationLoop = function(){
-            var that = this;
 
+            var that = this;
             this.frame++;
             var date = new Date();
             var thisTime = date.getTime();
@@ -246,7 +338,6 @@
                     that.animationLoop();
                 });
             }
-
         };
 
         function instanciate(){
@@ -258,10 +349,8 @@
 
             // var amplitude0 = Math.PI / 4; // 45 degrees
             var amplitude = amplitude0;
-            var period = 4000; //ms
             var theta = 0;
-            var pendulumLength = 250;
-            var pendulumWidth = 10;
+            var pendulumWidth = 5;
             var rotationPointX = canvas.width / 2;
             var rotationPointY = 20;
             startTime = Date.now();
@@ -274,9 +363,8 @@
                 //    theta = (amplitude * Math.sin((2 * Math.PI * this.getTime()) / period)) + Math.PI / 2;
                 //    amplitude = amplitude0*Math.exp((-b/2*m)*(this.getTime()) / period)
                 //    amplitude = amplitude0*Math.exp((-b/2*m)*(this.getTime()) / period)
-
                 //    theta = (amplitude0*Math.exp((-b/2*m)*(this.getTime()) / period) * Math.sin((2 * Math.PI * this.getTime()) / period)) + Math.PI / 2;
-                theta = (amplitude0*Math.exp((-b/2*m)*(elapsed) / period) * Math.cos((2 * Math.PI * elapsed) / period)) + Math.PI / 2;
+                theta = (amplitude0*Math.exp((-b/2*m)*(elapsed) / period*0.5) * Math.cos((2 * Math.PI * elapsed) / period*0.5)) + Math.PI / 2;
                 if(start_stop_trigger===false && record===true){
                     amplitude_graph.push(theta*180/Math.PI);
                     time_graph.push(elapsed/1000);
@@ -292,17 +380,21 @@
                 //draw dotted line
                 context.beginPath();
                 context.lineWidth=1;
-                context.moveTo(275,5);
-                context.lineTo(275, 315);
+                context.moveTo(280,5);
+                context.lineTo(280, 465);
                 context.strokeStyle="#B76E79";
                 context.stroke();
 
                 //display time
-                var commenttext_time="Time in Seconds: "+(elapsed/1000);
+                var commenttext_time="Time Elapsed in Seconds: "+(elapsed/1000);
                 if(start_stop_trigger===true){
-                    document.getElementById('commentboxleft').innerHTML = "";
+                    // document.getElementById('commentboxleft').innerHTML = "";
+                    document.getElementById('Time_Elapsed').innerHTML="";
                 }else{
-                document.getElementById('commentboxleft').innerHTML = commenttext_time;}
+                // document.getElementById('commentboxleft').innerHTML = commenttext_time;
+                document.getElementById('Time_Elapsed').innerHTML = commenttext_time;
+
+                }
 
                 // draw top circle
                 context.beginPath();
@@ -324,11 +416,12 @@
 
                 //  draw bottom circle
                 context.beginPath();
-                context.arc(endPointX, endPointY, 40, 0, 2 * Math.PI, false);
+                context.arc(endPointX, endPointY, 25, 0, 2 * Math.PI, false);
                 var grd = context.createLinearGradient(endPointX - 50, endPointY - 50, endPointX + 50, endPointY + 50);
-                grd.addColorStop(0, "#d4af37");
+                var bobcolour="#777a7c";        //Aluminium->#848789  Darker->#777a7c
+                grd.addColorStop(0, bobcolour);
                 grd.addColorStop(0.5, "white");
-                grd.addColorStop(1, "#d4af37");
+                grd.addColorStop(1, bobcolour);
                 context.fillStyle = grd;
                 context.fill();
             });
@@ -354,15 +447,15 @@
     <div id="simtitle">Simple Pendulum</div>
 
     <!-- Region for simulation display -->
-    <canvas id="myCanvas" height="400px" width="550px"></canvas>
+    <canvas id="myCanvas" height="470px" width="560px"></canvas>
 
 
     <div id="titleincanvas"></div>
 
 
     <!-- Region for comment / question prompts -->
-    <div id="commentboxleft"></div>
-    <div id="commentboxright"></div>
+    <!--<div id="commentboxleft"></div>-->
+    <!--<div id="commentboxright"></div>-->
 
     <!-- DND-Title of region for variables display -->
     <div id="vartitle">VARIABLES</div>
@@ -379,25 +472,42 @@
             <!-- <button type="button" onclick="end();">Stop</button> -->
             <!-- <button type="button" onclick="clearinput();">cl</button><br> -->
 
-
             <div class="varname">
-                <p title="Link Length">Mass (m)</p>
-                <input type="number" placeholder="1" id="mass" value="" autocomplete="off" size="20">
-            </div>
-            <button type="button" onclick="getInputValue_m();">Update</button><br>
 
+                <p title="Link Length">Mass (m)</p>
+                <input type="number" placeholder="1" id="mass" autocomplete="off" size="20">
+            </div>
+            <button id="mass_button" type="button" onclick="getInputValue_m();">Set</button><br>
 
             <div class="varname">
                 <p title="Link Length">Damping (b)</p>
-                <input type="number" placeholder="0.1" id="b" value="" autocomplete="off" size="20">
+                <input type="number" placeholder="0.1" id="b" autocomplete="off" size="20">
             </div>
-            <button type="button" onclick="getInputValue_b();">Update</button><br>
+            <button id="b_button" type="button" onclick="getInputValue_b();">Set</button><br>
 
             <div class="varname">
-                <p title="Link Length">Amplitude(degree)</p>
-                <input type="number" placeholder="60" id="amplitude" value="" autocomplete="off" size="20"><br>
+                <p title="Link Length">Amplitude (Degree)</p>
+                <input type="number" placeholder="60" id="amplitude" autocomplete="off" size="20">
             </div>
-            <button type="button" onclick="getInputValue_amplitude();">Set</button>
+            <button id="amplitude_button" type="button" onclick="getInputValue_amplitude();">Set</button><br>
+
+            <div class="varname">
+                <p title="Link Length">Time Period (Sec)</p>
+                <input type="number" placeholder="1" id="time_period" autocomplete="off" size="20">
+            </div>
+            <button id="time_period_button" type="button" onclick="getInputValue_timeperiod();">Set</button><br>
+
+            <div class="varname">
+                <p title="Link Length">Length (Meters)</p>
+                <input type="number" placeholder="0.9936" id="length" autocomplete="off" size="20">
+            </div>
+            <button id="length_button" type="button" onclick="getInputValue_length();">Set</button><br>
+
+            <div class="varname">
+                <div id="Time_Elapsed">
+
+                </div>
+            </div>
 
         </div>
     </div>
@@ -412,9 +522,8 @@
             <img id="stopbuttondull" onclick="end()" src="sins/bluestopdull.png"  alt="Stop"/></div>
         <div class="control_column">
             <!--<img id="stopbuttondull_dummy" onclick="end()" src="sins/bluestopdull.png" />-->
-            <img id="clearbutton" onclick="clearinput()" src="sins/Clear.png" alt="Clear"/></div>
-            <button type="button" onclick="newpage()">new page</button>
-
+            <img id="clearbutton" onclick="clearinput()" src="sins/Clear.png" alt="Clear"/>
+            <img id="graphbutton" onclick="newpage()" src="sins/Graphs.png" alt="Graphs"/></div>
 
         <!--
         <div class="usercheck">-->
