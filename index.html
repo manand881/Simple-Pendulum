@@ -31,6 +31,7 @@
         var elapsed = Date.now()-startTime;
         var amplitude_graph = new Array();                      // for graphing purposes
         var time_graph = new Array();                           // for graphing purposes
+        var empty_array=[];
         var length=((period*2/1000)**2*9.80665)/(2*Math.PI)**2; // length of the pendulum
 
 
@@ -129,6 +130,9 @@
             start_stop_trigger=true;
             change_control_image();
             sessionStorage.clear();
+            amplitude_graph=[];
+            time_graph=[];
+
             disable_buttons();
         }
 
@@ -235,13 +239,14 @@
 
             var len = time_graph.length;
             if (len===0){
-                alert("No data to plot the graph");
+                alert("No data to plot the graph.\nRun the experiment to automatically generate graph untill the point of clicking of this button.");
             }else{
                 sessionStorage.clear();
                 window.sessionStorage.setItem("amplitude_graph", JSON.stringify(amplitude_graph));
                 window.sessionStorage.setItem("time_graph", JSON.stringify(time_graph));
                 window.open("Graph.html");
                 record=false;
+                window.location.reload(false);
             }
         }
 

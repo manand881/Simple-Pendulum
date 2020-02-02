@@ -6,11 +6,16 @@
 
 <body>
 <!--<h1 align="center" id="headingt">Graph of Amplitude Vs Time</h1>-->
-<div id='myDiv'><!-- Plotly chart will be drawn inside this DIV --></div>
+<div id='myDiv' align="center"><!-- Plotly chart will be drawn inside this DIV --></div>
+<button id="reload" type="button" onclick="window.location.reload(false);">Close to re-run and plot new graph</button><br>
 <script>
 
     var time_array = JSON.parse(sessionStorage.getItem("amplitude_graph"));//no brackets
     var amplitude_array = JSON.parse(sessionStorage.getItem("time_graph"));//no brackets
+    sessionStorage.removeItem("amplitude_graph");
+    sessionStorage.removeItem("time_graph");
+    sessionStorage.clear();
+    localStorage.clear();
     var x = 0;
     var len = time_array.length;
 
@@ -53,8 +58,18 @@
         }};
 
     Plotly.newPlot('myDiv', data, layout);
-    sessionStorage.removeItem("amplitude_graph");
-    sessionStorage.removeItem("time_graph");
+
+    function makeid(length) {
+        var result           = '';
+        var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        var charactersLength = characters.length;
+        for ( var i = 0; i < length; i++ ) {
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        return result;
+    }
+
+    // alert(makeid(5));
 
 </script>
 </body>
