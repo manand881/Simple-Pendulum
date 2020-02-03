@@ -18,7 +18,7 @@
         var b = 0.1;
         var record=true;                                            // flag for recording graph values
         var period = 1000; //ms                                     // time period of oscillations
-        var pendulumLength = 100;                                   // for animation purposes
+        var pendulumLength = 50;                                    // for animation purposes
         var startTime = Date.now();                                 // for calculating time periods
         var start_stop_trigger=true;                                // for indicating simulation condition
         var amplitude0 = Math.PI / 3;                               // 60 degrees
@@ -26,7 +26,7 @@
         var amplitude_graph = new Array();                          // for graphing purposes
         var time_graph = new Array();                               // for graphing purposes
         var amplitude_buffer=amplitude0;                            // for taking input amplitude
-        var length=((period*2/1000)**2*9.80665)/(2*Math.PI)**2;     // length of the pendulum
+        var length=((period/1000)**2*9.80665)/(2*Math.PI)**2;     // length of the pendulum
 
         function begin(){                                           // function is called when start button is clicked
 
@@ -165,7 +165,7 @@
             // startTime = Date.now();
         }
 
-        function getInputValue_amplitude(){
+        function getInputValue_amplitude(){                         // function is called to retrieve the input for amplitude
 
             // Selecting the input element and get its value
             var inputVal = document.getElementById("amplitude").value;
@@ -191,7 +191,7 @@
             clearinput();
         }
 
-        function getInputValue_timeperiod(){
+        function getInputValue_timeperiod(){                        // function is called to retrieve the input for time period
 
             // Selecting the input element and get its value
             var inputVal = document.getElementById("time_period").value;
@@ -206,12 +206,12 @@
                 alert("Enter Value greater than 0");
             }
 
-            clearinput();
+            clearinput();                                           // clear input values typed in the input boxes
             document.getElementById("time_period").placeholder = period/1000;
-            length=((period*2/1000)**2*9.80665)/(2*Math.PI)**2;
+            length=((period/1000)**2*9.80665)/(2*Math.PI)**2;
             length=length.toFixed(4);
-            document.getElementById("length").placeholder = length;                                                     // length/0.09936=x/100
-            pendulumLength=(length*100)/0.9936;                                                                         // length*100/0.9936=pend_len
+            document.getElementById("length").placeholder = length; // length/0.09936=x/100
+            pendulumLength=(length*50)/0.2484;                     // length*100/0.9936=pend_len
         }
 
         function getInputValue_length(){
@@ -233,8 +233,8 @@
             document.getElementById("length").placeholder = length;
             period=1000*2*Math.PI*Math.sqrt(length/9.80665);
             period=period.toFixed(4);
-            document.getElementById("time_period").placeholder = period/2000;
-            pendulumLength=(length*100)/0.9936;                                                                         // length*100/0.9936=pend_len
+            document.getElementById("time_period").placeholder = period/1000;
+            pendulumLength=(length*50)/0.2484;                                                                         // length*100/0.9936=pend_len
             // startTime = Date.now();
         }
 
@@ -358,11 +358,10 @@
             // var amplitude0 = Math.PI / 4; // 45 degrees
             var amplitude = amplitude0;
             var theta = 0;
-            var pendulumWidth = 5;
+            var pendulumWidth = 3;
             var rotationPointX = canvas.width / 2;
             var rotationPointY = 20;
             startTime = Date.now();
-
 
             anim.setStage(function(){
                 elapsed = Date.now()-startTime;
@@ -371,7 +370,7 @@
                 //    amplitude = amplitude0*Math.exp((-b/2*m)*(this.getTime()) / period)
                 //    amplitude = amplitude0*Math.exp((-b/2*m)*(this.getTime()) / period)
                 //    theta = (amplitude0*Math.exp((-b/2*m)*(this.getTime()) / period) * Math.sin((2 * Math.PI * this.getTime()) / period)) + Math.PI / 2;
-                theta = (amplitude0*Math.exp((-b/2*m)*(elapsed) / period*0.5) * Math.cos((2 * Math.PI * elapsed) / period*0.5)) + Math.PI / 2;
+                theta = (amplitude0*Math.exp((-b/2*m)*(elapsed) / period) * Math.cos((2 * Math.PI * elapsed) / period)) + Math.PI / 2;
 
                 if(start_stop_trigger===false && record===true){            //creating array for graphing
 
@@ -421,7 +420,7 @@
 
                 //  draw bottom circle
                 context.beginPath();
-                context.arc(endPointX, endPointY, 25, 0, 2 * Math.PI, false);
+                context.arc(endPointX, endPointY, 20, 0, 2 * Math.PI, false);
                 var grd = context.createLinearGradient(endPointX - 50, endPointY - 50, endPointX + 50, endPointY + 50);
                 var bobcolour="#777a7c";        //Aluminium->#848789  Darker->#777a7c
                 grd.addColorStop(0, bobcolour);
@@ -500,7 +499,7 @@
 
             <div class="varname">
                 <p title="Link Length">Length (Meters)</p>
-                <input type="number" placeholder="0.9936" id="length" autocomplete="off" size="20">
+                <input type="number" placeholder="0.2484" id="length" autocomplete="off" size="20">
             </div>
             <button id="length_button" type="button" onclick="getInputValue_length();">Set</button><br>
 
