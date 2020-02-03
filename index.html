@@ -28,13 +28,12 @@
         var amplitude_buffer=amplitude0;                            // for taking input amplitude
         var length=((period*2/1000)**2*9.80665)/(2*Math.PI)**2;     // length of the pendulum
 
-        function begin(){
+        function begin(){                                           // function is called when start button is clicked
 
             if(start_stop_trigger===true){
 
                 sessionStorage.clear();
                 record=true;
-                amplitude0 = Math.PI / 3;                           // 60 degrees
                 amplitude0 = amplitude_buffer;
                 startTime = Date.now();
                 start_stop_trigger=false;
@@ -44,7 +43,7 @@
             }
         }
 
-        function change_control_image(){
+        function change_control_image(){                            // function is called to dull out the start button
 
             if (start_stop_trigger===false){
 
@@ -56,7 +55,7 @@
             }
         }
 
-        function disable_buttons(){
+        function disable_buttons(){                                 // function is called to disable all the fields and butons upon simulation start
 
             if(start_stop_trigger===false){
                 document.getElementById("mass").disabled = true;
@@ -84,13 +83,13 @@
             }
         }
 
-        window.onload = function(){
+        window.onload = function(){                                 // instructions for when the browser finishes loading
 
             amplitude0=0;
             instanciate();
         };
 
-        function clearinput(){                              //clear mass input field
+        function clearinput(){                                      // function to clear the input fields
 
             var input = document.getElementById("mass");
             var input_value = "";
@@ -117,7 +116,7 @@
             input.value=input_value;
         }
 
-        function end(){
+        function end(){                                             // function is called to end the simulation
 
             amplitude0=0;
             start_stop_trigger=true;
@@ -128,7 +127,7 @@
             disable_buttons();
         }
 
-        function getInputValue_m(){                 // Selecting the input element and get its value
+        function getInputValue_m(){                                 // function is called to retrieve the input for mass m
 
             var inputVal = document.getElementById("mass").value;
 
@@ -146,7 +145,7 @@
             clearinput();
         }
 
-        function getInputValue_b(){
+        function getInputValue_b(){                                 // function is called to retrieve the input for damping coefficient b
 
             // Selecting the input element and get its value
             var inputVal = document.getElementById("b").value;
@@ -509,6 +508,9 @@
                 <div id="Time_Elapsed"></div>
             </div>
 
+        </div>
+        <div id="helpdiv" align="baseline">
+            <img id="help" src="sins/help.png">
         </div>
     </div>
 

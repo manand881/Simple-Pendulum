@@ -139,7 +139,6 @@ div#commentboxright
 	font-family: "Comic Sans MS", cursive, sans-serif;
 }
 
-
 div#variables
 {
 	position:absolute;
@@ -168,6 +167,12 @@ div#controls_row
 	display: flex;
 	flex-wrap: wrap;
 	padding: 0 4px;
+}
+
+div#helpdiv{
+	position:absolute;
+	bottom:0;
+	right:0;
 }
 
 .control_column {

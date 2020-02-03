@@ -31,7 +31,7 @@
 
     console.log(time_array,amplitude_array);
 
-    var trace2 = {
+    var trace1 = {
         y: time_array,
         x: amplitude_array,
         mode: 'markers',
@@ -41,7 +41,7 @@
         type: 'scatter'
     };
 
-    var data = [trace2];
+    var data = [trace1];
     var layout = {
         title: 'Graph of Amplitude Vs Time',
         xaxis: {
@@ -58,18 +58,6 @@
         }};
 
     Plotly.newPlot('myDiv', data, layout);
-
-    function makeid(length) {
-        var result           = '';
-        var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        var charactersLength = characters.length;
-        for ( var i = 0; i < length; i++ ) {
-            result += characters.charAt(Math.floor(Math.random() * charactersLength));
-        }
-        return result;
-    }
-
-    // alert(makeid(5));
 
 </script>
 </body>
