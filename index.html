@@ -11,29 +11,22 @@
 
     <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js'></script>
     <script src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.0/jquery-ui.min.js'></script>
-    <!-- <style type="text/css">
-      #myCanvas{
-        padding-top: 85px;
-      }
-      </style>  -->
-
     <!-- <script type="text/javascript" src= "sins/MOMscript.js"></script> -->
     <script >
 
         var m = 1;
         var b = 0.1;
-        var record=true;
-        var period = 1000; //ms
-        var pendulumLength = 100;                               // for animation purposes
-        var startTime = Date.now();
-        var start_stop_trigger=true;
-        var amplitude0 = Math.PI / 3;                           // 60 degrees
-        var elapsed = Date.now()-startTime;
-        var amplitude_graph = new Array();                      // for graphing purposes
-        var time_graph = new Array();                           // for graphing purposes
-        var empty_array=[];
-        var length=((period*2/1000)**2*9.80665)/(2*Math.PI)**2; // length of the pendulum
-
+        var record=true;                                            // flag for recording graph values
+        var period = 1000; //ms                                     // time period of oscillations
+        var pendulumLength = 100;                                   // for animation purposes
+        var startTime = Date.now();                                 // for calculating time periods
+        var start_stop_trigger=true;                                // for indicating simulation condition
+        var amplitude0 = Math.PI / 3;                               // 60 degrees
+        var elapsed = Date.now()-startTime;                         // time elapsed since simulation start
+        var amplitude_graph = new Array();                          // for graphing purposes
+        var time_graph = new Array();                               // for graphing purposes
+        var amplitude_buffer=amplitude0;                            // for taking input amplitude
+        var length=((period*2/1000)**2*9.80665)/(2*Math.PI)**2;     // length of the pendulum
 
         function begin(){
 
@@ -41,7 +34,8 @@
 
                 sessionStorage.clear();
                 record=true;
-                amplitude0 = Math.PI / 3;               // 60 degrees
+                amplitude0 = Math.PI / 3;                           // 60 degrees
+                amplitude0 = amplitude_buffer;
                 startTime = Date.now();
                 start_stop_trigger=false;
                 instanciate();
@@ -90,7 +84,6 @@
             }
         }
 
-
         window.onload = function(){
 
             amplitude0=0;
@@ -132,13 +125,13 @@
             sessionStorage.clear();
             amplitude_graph=[];
             time_graph=[];
-
             disable_buttons();
         }
 
         function getInputValue_m(){                 // Selecting the input element and get its value
 
             var inputVal = document.getElementById("mass").value;
+
             if(inputVal>0){
                 m = inputVal;
             }else if(inputVal<0){
@@ -148,6 +141,7 @@
             }else{
                 alert("Enter Value greater than 0");
             }
+
             document.getElementById("mass").placeholder = m;
             clearinput();
         }
@@ -156,6 +150,7 @@
 
             // Selecting the input element and get its value
             var inputVal = document.getElementById("b").value;
+
             if(inputVal>0){
                 b = inputVal;
             }else if(inputVal<0){
@@ -165,6 +160,7 @@
             }else{
                 alert("Enter Value greater than 0");
             }
+
             clearinput();
             document.getElementById("b").placeholder = b;
             // startTime = Date.now();
@@ -174,13 +170,16 @@
 
             // Selecting the input element and get its value
             var inputVal = document.getElementById("amplitude").value;
+
             if(inputVal>0){
+
                 if(inputVal>90){
                     alert("Enter Value lesser than 90");
                 }else{
-                    amplitude0 = inputVal*Math.PI/180;
+                    amplitude_buffer = inputVal*Math.PI/180;
                     document.getElementById("amplitude").placeholder = inputVal;
                 }
+
             }else if(inputVal<0){
                 alert("Enter Value greater than 0");
             }else if(typeof inputVal == "string"){
@@ -188,6 +187,7 @@
             }else{
                 alert("Enter Value greater than 0");
             }
+
             startTime = Date.now();
             clearinput();
         }
@@ -196,6 +196,7 @@
 
             // Selecting the input element and get its value
             var inputVal = document.getElementById("time_period").value;
+
             if(inputVal>0){
                 period = (inputVal*1000);
             }else if(inputVal<0){
@@ -205,6 +206,7 @@
             }else{
                 alert("Enter Value greater than 0");
             }
+
             clearinput();
             document.getElementById("time_period").placeholder = period/1000;
             length=((period*2/1000)**2*9.80665)/(2*Math.PI)**2;
@@ -217,6 +219,7 @@
 
             // Selecting the input element and get its value
             var inputVal = document.getElementById("length").value;
+
             if(inputVal>0){
                 length = inputVal;
             }else if(inputVal<0){
@@ -226,6 +229,7 @@
             }else{
                 alert("Enter Value greater than 0");
             }
+
             clearinput();
             document.getElementById("length").placeholder = length;
             period=1000*2*Math.PI*Math.sqrt(length/9.80665);
@@ -238,6 +242,7 @@
         function newpage(){
 
             var len = time_graph.length;
+
             if (len===0){
                 alert("No data to plot the graph.\nRun the experiment to automatically generate graph untill the point of clicking of this button.");
             }else{
@@ -249,7 +254,6 @@
                 window.location.reload(false);
             }
         }
-
 
         var Animation = function(canvasId) {
             this.canvas = document.getElementById(canvasId);
@@ -363,21 +367,18 @@
 
             anim.setStage(function(){
                 elapsed = Date.now()-startTime;
-
                 //    update
                 //    theta = (amplitude * Math.sin((2 * Math.PI * this.getTime()) / period)) + Math.PI / 2;
                 //    amplitude = amplitude0*Math.exp((-b/2*m)*(this.getTime()) / period)
                 //    amplitude = amplitude0*Math.exp((-b/2*m)*(this.getTime()) / period)
                 //    theta = (amplitude0*Math.exp((-b/2*m)*(this.getTime()) / period) * Math.sin((2 * Math.PI * this.getTime()) / period)) + Math.PI / 2;
                 theta = (amplitude0*Math.exp((-b/2*m)*(elapsed) / period*0.5) * Math.cos((2 * Math.PI * elapsed) / period*0.5)) + Math.PI / 2;
-                if(start_stop_trigger===false && record===true){
+
+                if(start_stop_trigger===false && record===true){            //creating array for graphing
+
                     amplitude_graph.push(theta*180/Math.PI);
                     time_graph.push(elapsed/1000);
                 }
-
-
-                //creating array for graphing
-
 
                 //clear
                 this.clear();
@@ -392,13 +393,13 @@
 
                 //display time
                 var commenttext_time="Time Elapsed in Seconds: "+(elapsed/1000);
+
                 if(start_stop_trigger===true){
                     // document.getElementById('commentboxleft').innerHTML = "";
                     document.getElementById('Time_Elapsed').innerHTML="";
                 }else{
                 // document.getElementById('commentboxleft').innerHTML = commenttext_time;
                 document.getElementById('Time_Elapsed').innerHTML = commenttext_time;
-
                 }
 
                 // draw top circle
@@ -443,8 +444,6 @@
     The simulation requires JavaScript to be enabled.
 </noscript>
 
-
-
 <!-- Defining Container for Simulation -->
 <div id="container">
 
@@ -454,9 +453,7 @@
     <!-- Region for simulation display -->
     <canvas id="myCanvas" height="470px" width="560px"></canvas>
 
-
     <div id="titleincanvas"></div>
-
 
     <!-- Region for comment / question prompts -->
     <!--<div id="commentboxleft"></div>-->
@@ -509,9 +506,7 @@
             <button id="length_button" type="button" onclick="getInputValue_length();">Set</button><br>
 
             <div class="varname">
-                <div id="Time_Elapsed">
-
-                </div>
+                <div id="Time_Elapsed"></div>
             </div>
 
         </div>
@@ -529,13 +524,6 @@
             <!--<img id="stopbuttondull_dummy" onclick="end()" src="sins/bluestopdull.png" />-->
             <img id="clearbutton" onclick="clearinput()" src="sins/Clear.png" alt="Clear"/>
             <img id="graphbutton" onclick="newpage()" src="sins/Graphs.png" alt="Graphs"/></div>
-
-        <!--
-        <div class="usercheck">-->
-        <!-- Point tracing
-        <input type="checkbox" id="trace" ></input> <p>Trace Mid Point</p>-->
-        <!-- Reset Parameters
-        <input type="button" id="resetparams" value="Reset" onclick="varinit();"></input> -->
     </div>
 
     <!-- DND-Copyright display-->
