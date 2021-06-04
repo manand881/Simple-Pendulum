@@ -1,5 +1,5 @@
 # Simple Pendulum Simulation for Virtual Labs (Solve)
-This repo is a demostration for the kind of work that I did while at [CSD NIT-K](https://csd.nitk.ac.in/) for [V-Labs](www.vlab.co.in/). This repository is focused on simulating a simple pendulum with damping for students to take reading and perform their lab experiment without needing to be in a physical lab with the required apparatus to perform this experiment
+This repo is a demonstration for the kind of work that I did while at [CSD NIT-K](https://csd.nitk.ac.in/) for [V-Labs](www.vlab.co.in/). This repository is focused on simulating a simple pendulum with damping for students to take reading and perform their lab experiment without needing to be in a physical lab with the required apparatus to perform this experiment
 
 ## Screenshots
 
