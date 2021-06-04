@@ -3,8 +3,8 @@ This repo is a demostration for the kind of work that I did while at [CSD NIT-K]
 
 ## Screenshots
 
-![Static-view](static.png)
-![Graph-view](plotly.png)
+![Static-view](static.PNG)
+![Graph-view](plotly.PNG)
 
 ## How to access 
 
