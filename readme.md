@@ -8,7 +8,7 @@ This repo is a demonstration for the kind of work that I did while at [CSD NIT-K
 
 ## How to access 
 
-This virtual lab can be accessed by clicking on the following [link](https://manand881.github.io/Simple_Pendulum/). 
+This virtual lab can be accessed by clicking on the following [link](https://manand881.github.io/Simple-Pendulum/). 
 
 ## How to use
 
